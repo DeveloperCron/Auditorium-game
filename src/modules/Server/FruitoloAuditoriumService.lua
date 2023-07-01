@@ -15,7 +15,9 @@ function FruitoloAuditoriumService:Init(serviceBag)
 	self._serviceBag:GetService(require("CmdrService"))
 
 	-- Internal
+	self._serviceBag:GetService(require("CurtainService"))
 	self._serviceBag:GetService(require("PlayerService"))
+	self._serviceBag:GetService(require("ServerlockService"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumBindersServer"))
 end
 

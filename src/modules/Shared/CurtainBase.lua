@@ -26,7 +26,7 @@ function CurtainBase:GetParent()
 end
 
 function CurtainBase:ObserveState()
-	return RxInstanceUtils.observeProperty(self._obj, "Visible")
+	return RxInstanceUtils.observeProperty(self._obj, "Transparency")
 end
 
 return CurtainBase

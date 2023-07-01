@@ -8,6 +8,8 @@ local Players = game:GetService("Players")
 local Maid = require("Maid")
 local OverheadClass = require("OverheadClass")
 local LeaderstatsClass = require("LeaderstatsClass")
+local ServerlockService = require("ServerlockService")
+local GroupUtils = require("GroupUtils")
 
 local PlayerService = {}
 PlayerService.ServiceName = "PlayerService"
@@ -15,12 +17,21 @@ PlayerService.ServiceName = "PlayerService"
 function PlayerService:Init(serviceBag)
 	assert(not self._serviceBag, "Already initialized")
 	self._serviceBag = assert(serviceBag, "No serviceBag")
-
 	self._maid = Maid.new()
+
+	self._ServerlockService = self._serviceBag:GetService(ServerlockService)
 end
 
 function PlayerService:Start()
 	local function onPlayerAdded(player: Player)
+		self._ServerlockService:observeIsLocked():Subscribe(function(value)
+			GroupUtils.promiseRankInGroup(player, game.CreatorId):Then(function(rank)
+				if value and rank <= 0 then
+					player:Kick("Server is locked!")
+				end
+			end)
+		end)
+
 		local function onCharacterAdded(character: Model)
 			OverheadClass:addOverhead(player)
 		end

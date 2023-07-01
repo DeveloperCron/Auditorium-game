@@ -21,16 +21,18 @@ function CurtainService:Init(serviceBag)
 end
 
 function CurtainService:Start()
-	local function handleCurtainEvent(player: Player, state: boolean)
-		assert(typeof(state) == "boolean", "Bad state")
-
-		local playerRank = GroupUtils.promiseRankInGroup(player, game.CreatorId)
-		Rx.fromPromise(playerRank):Subscribe(function(rank)
+	local function canOpenCurtain(player: Player)
+		-- Change the rank later
+		GroupUtils.promiseRankInGroup(player, game.CreatorId):Then(function(rank)
 			if rank <= 0 then
-				player:Kick("Quit exploiting get off of the stage")
+				return
 			end
 		end)
 
+		return true
+	end
+
+	local function handleCurtain(state: boolean)
 		for _, curtain in pairs(self._curtainBinders:GetAll()) do
 			if state then
 				curtain:Open()
@@ -40,8 +42,16 @@ function CurtainService:Start()
 		end
 	end
 
-	-- CurtainEvent listener
-	self._maid:GiveTask(self._curtainEvent:Connect(handleCurtainEvent))
+	self._maid:GiveTask(Rx.fromSignal(self._curtainEvent.OnServerEvent)
+		:Pipe({
+			-- Check if the player can open the curtain
+			Rx.where(canOpenCurtain),
+			-- Get the state, the second argument of the RemoteEvent
+			Rx.map(function(_, state: boolean)
+				return state
+			end),
+		})
+		:Subscribe(handleCurtain))
 end
 
 function CurtainService:Cleanup()
