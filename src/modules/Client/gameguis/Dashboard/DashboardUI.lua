@@ -40,7 +40,7 @@ function DashboardUI:_render()
 	local backgroundColor = Color3.fromRGB(188, 177, 162)
 	return Blend.New("Frame")({
 		BackgroundColor3 = backgroundColor,
-		Size = UDim2.fromOffset(325, 50),
+		Size = UDim2.fromOffset(325, 100),
 
 		[Blend.Children] = {
 			Blend.New("UICorner")({

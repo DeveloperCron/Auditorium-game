@@ -6,7 +6,6 @@ local require = require(script.Parent.loader).load(script)
 local Blend = require("Blend")
 local Signal = require("Signal")
 local BasicPane = require("BasicPane")
-local RxValueBaseUtils = require("RxValueBaseUtils")
 
 local DashboardButton = setmetatable({}, BasicPane)
 DashboardButton.ClassName = "DashboardButton"
@@ -21,12 +20,10 @@ function DashboardButton.new()
 	self._displayName.Value = ""
 	self._maid:GiveTask(self._displayName)
 
-	-- White by default
 	self._keypoint1 = Instance.new("Color3Value")
 	self._keypoint1.Value = Color3.fromRGB(255, 255, 255)
 	self._maid:GiveTask(self._keypoint1)
 
-	-- White by default
 	self._keypoint2 = Instance.new("Color3Value")
 	self._keypoint2.Value = Color3.fromRGB(255, 211, 211)
 	self._maid:GiveTask(self._keypoint2)
@@ -71,10 +68,7 @@ function DashboardButton:_render()
 			}),
 
 			Blend.New("UIGradient")({
-				Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, self._keypoint1.Value),
-					ColorSequenceKeypoint.new(1, self._keypoint2.Value),
-				}),
+				Color = Blend.Computed(self._keypoint1, self._keypoint2, ColorSequence.new),
 			}),
 
 			Blend.New("TextLabel")({
