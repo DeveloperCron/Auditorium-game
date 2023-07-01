@@ -1,0 +1,37 @@
+{
+  "name": "FruitoloAuditorium",
+  "globIgnorePaths": ["**/.package-lock.json"],
+  "tree": {
+    "$className": "DataModel",
+    "ServerScriptService": {
+      "FruitoloAuditorium": {
+        "$className": "Folder",
+        "game": {
+          "$path": "src/modules"
+        },
+        "packages": {
+          "$path": "node_modules"
+        }
+      },
+      "FruitoloAuditoriumScripts": {
+        "$path": "src/scripts/Server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "FruitoloAuditoriumScripts": {
+          "$path": "src/scripts/Client"
+        }
+      }
+    },
+    "ServerStorage": {
+      "$ignoreUnknownInstances": true,
+      "$className": "ServerStorage",
+
+      "BillBoardGui": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": true
+      }
+    }
+  }
+}

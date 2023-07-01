@@ -1,0 +1,29 @@
+{
+  "name": "fruitoloauditorium",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "Roblox",
+    "Nevermore",
+    "Lua"
+  ],
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@quenty/binder": "^8.19.1",
+    "@quenty/characterutils": "^6.8.0",
+    "@quenty/clienttranslator": "^8.23.0",
+    "@quenty/cmdrservice": "^7.17.0",
+    "@quenty/grouputils": "^6.6.0",
+    "@quenty/instanceutils": "^7.15.0",
+    "@quenty/loader": "^6.2.1",
+    "@quenty/playerutils": "^2.16.0",
+    "@quenty/remoting": "^6.6.0",
+    "@quenty/servicebag": "^6.8.0"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "prettier": "2.8.8"
+  }
+}
