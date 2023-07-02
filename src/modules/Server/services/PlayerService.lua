@@ -4,6 +4,7 @@
 
 local require = require(script.Parent.loader).load(script)
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
 local Maid = require("Maid")
 local OverheadClass = require("OverheadClass")
@@ -26,8 +27,12 @@ function PlayerService:Start()
 	local function onPlayerAdded(player: Player)
 		self._ServerlockService:observeIsLocked():Subscribe(function(value)
 			GroupUtils.promiseRankInGroup(player, game.CreatorId):Then(function(rank)
-				if value and rank <= 0 then
-					player:Kick("Server is locked!")
+				if RunService:IsStudio() then
+					print("⚠️ | Player is allowed!")
+				else
+					if value and rank <= 27 then
+						player:Kick("Server is locked!")
+					end
 				end
 			end)
 		end)

@@ -22,12 +22,10 @@ end
 
 function CurtainService:Start()
 	local function canOpenCurtain(player: Player)
-		-- Change the rank later
-		GroupUtils.promiseRankInGroup(player, game.CreatorId):Then(function(rank)
-			if rank <= 0 then
-				return
-			end
-		end)
+		local playerRank = GroupUtils.promiseRankInGroup(player, game.CreatorId):Wait()
+		if playerRank < 27 then
+			return
+		end
 
 		return true
 	end

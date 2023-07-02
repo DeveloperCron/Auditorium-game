@@ -18,6 +18,8 @@ function FruitoloAuditoriumServiceClient:Init(serviceBag)
 	self._serviceBag:GetService(require("DashboardService"))
 	self._serviceBag:GetService(require("RankdoorService"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumBindersClient"))
+	self._serviceBag:GetService(require("PermissionServiceClient"))
+	self._serviceBag:GetService(require("FruitoloAdmin"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumTranslator"))
 end
 
