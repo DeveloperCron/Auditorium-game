@@ -56,6 +56,7 @@ function DashboardButton:_render()
 
 	return Blend.New("TextButton")({
 		Size = UDim2.fromOffset(150, 125),
+		Name = "Button",
 		Text = "",
 
 		[Blend.OnEvent("Activated")] = function()

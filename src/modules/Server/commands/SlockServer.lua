@@ -2,11 +2,11 @@
     @class SlockServer
 ]=]
 local require = require(script.Parent.loader).load(script)
-local CmdrConfig = require("CmdrConfig")
+local FruitoloConstants = require("FruitoloConstants")
 
 return function(_, state)
 	assert(typeof(state) == "boolean", "bad state")
-	CmdrConfig._slockSignal:Fire(state)
+	FruitoloConstants._slockSignal:Fire(state)
 
 	return "Fired server"
 end

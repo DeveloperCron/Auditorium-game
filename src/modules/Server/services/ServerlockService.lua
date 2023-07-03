@@ -6,7 +6,7 @@ local require = require(script.Parent.loader).load(script)
 local Maid = require("Maid")
 local RxValueBaseUtils = require("RxValueBaseUtils")
 local Rx = require("Rx")
-local CmdrConfig = require("CmdrConfig")
+local FruitoloConstants = require("FruitoloConstants")
 
 local ServerlockService = {}
 ServerlockService.ServiceName = "ServerlockService"
@@ -20,7 +20,7 @@ function ServerlockService:Init(serviceBag)
 	self._lockedBoolean.Value = true
 	self._maid:GiveTask(self._lockedBoolean)
 
-	self._slockEvent = CmdrConfig._slockSignal
+	self._slockEvent = FruitoloConstants._slockSignal
 end
 
 function ServerlockService:Start()

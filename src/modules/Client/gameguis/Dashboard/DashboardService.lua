@@ -24,6 +24,7 @@ function DashboardService:Init(serviceBag)
 end
 
 function DashboardService:_renderDashboard()
+	-- @TODO This sucks
 	local maid = Maid.new()
 	local renderMaid = Maid.new()
 

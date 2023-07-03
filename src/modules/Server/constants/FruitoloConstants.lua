@@ -1,7 +1,5 @@
 --[=[
-    @class cmdrConfig
-
-    returns a table
+    @class FruitoloConstants
 ]=]
 
 local require = require(script.Parent.loader).load(script)
