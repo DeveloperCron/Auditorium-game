@@ -13,6 +13,10 @@ return function(target)
 	notification:Show()
 	notification.Gui.Parent = target
 
+	renderMaid:GiveTask(notification.Activated:Connect(function()
+		notification:Hide(true)
+	end))
+
 	return function()
 		renderMaid:DoCleaning()
 	end

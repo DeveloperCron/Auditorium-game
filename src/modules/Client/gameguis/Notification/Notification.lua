@@ -1,14 +1,18 @@
 --[=[
     @class Notification
+
+	--@TODO extract the ToolTip! Make it a component by itself
 ]=]
 local require = require(script.Parent.loader).load(script)
-local Blend = require("Blend")
-local BasicPane = require("BasicPane")
+local ButtonHighlightModel = require("ButtonHighlightModel")
 local SpringObject = require("SpringObject")
-local TextServiceUtils = require("TextServiceUtils")
-local ValueObject = require("ValueObject")
-local ViewPortSize = workspace.Camera.ViewportSize
--- local Math = require("Math")
+local BasicPane = require("BasicPane")
+local InputImageLibrary = require("InputImageLibrary")
+local Signal = require("Signal")
+local Blend = require("Blend")
+
+local Label = require("Label")
+local Tooltip = require("Tooltip")
 
 local Notification = setmetatable({}, BasicPane)
 Notification.ClassName = "Notification"
@@ -16,6 +20,9 @@ Notification.__index = Notification
 
 function Notification.new()
 	local self = setmetatable(BasicPane.new(), Notification)
+
+	self.Activated = Signal.new()
+	self._maid:GiveTask(self.Activated)
 
 	self._title = Instance.new("StringValue")
 	self._title.Value = ""
@@ -25,23 +32,30 @@ function Notification.new()
 	self._labelText.Value = ""
 	self._maid:GiveTask(self._labelText)
 
-	self._percentVisible = SpringObject.new(0, 40)
+	self._percentVisible = SpringObject.new(0, 35)
 	self._maid:GiveTask(self._percentVisible)
 
-	self._titleSize = ValueObject.new(Vector2.new(120, 40), "Vector2")
-	self._maid:GiveTask(self._titleSize)
+	self._isHighlighted = Instance.new("BoolValue")
+	self._isHighlighted.Value = false
+	self._maid:GiveTask(self._isHighlighted)
 
-	self._absoluteSize = ValueObject.new(Vector2.new(), "Vector2")
-	self._maid:GiveTask(self._absoluteSize)
+	self._buttonModel = ButtonHighlightModel.new()
+	self._maid:GiveTask(self._buttonModel)
 
 	self._maid:GiveTask(self.VisibleChanged:Connect(function(isVisible, doNotAnimate)
 		self._percentVisible.t = isVisible and 1 or 0
 		if doNotAnimate then
-			if doNotAnimate then
-				self._percentVisible.p = self._percentVisible.t
-				self._percentVisible.v = 0
-			end
+			self._percentVisible.p = self._percentVisible.t
+			self._percentVisible.v = 0
 		end
+	end))
+
+	self._maid:GiveTask(self._buttonModel:ObserveIsMouseOrTouchOver():Subscribe(function(isHovered)
+		self:setIsHighlighted(isHovered)
+	end))
+
+	self._maid:GiveTask(self:_getClickButton():Subscribe(function(gui)
+		self._clickButton = gui
 	end))
 
 	self._maid:GiveTask(self:_render():Subscribe(function(gui)
@@ -60,28 +74,71 @@ function Notification:setLabelText(text: string)
 	self._labelText.Value = text
 end
 
--- EW! must change it some day
 function Notification:setTitleText(text: string)
 	assert(typeof(text) == "string" or "number", "Bad text")
 	self._title.Value = text
+end
 
-	self._maid:GiveTask(TextServiceUtils.observeSizeForLabelProps({
-		Text = text,
-		Font = Enum.Font.Cartoon,
-		MaxSize = Vector2.new(math.huge, math.huge),
-		TextSize = 36,
-	}):Subscribe(function(size: Vector2)
-		self._titleSize:SetValue(size)
-	end))
+function Notification:setIsHighlighted(isHighlighted: boolean)
+	self._isHighlighted.Value = isHighlighted
+end
+
+-- Extract it in the future
+function Notification:_getClickButton()
+	local clickButton = InputImageLibrary:GetScaledImageLabel(Enum.UserInputType.MouseButton1, "Light")
+	self._maid:GiveTask(clickButton)
+
+	local scaleSpring = Blend.Spring(
+		Blend.Computed(self._isHighlighted, function(isHovered)
+			if isHovered then
+				return 0.8
+			end
+
+			return 1
+		end),
+		35,
+		0.5
+	)
+
+	Blend.mount(clickButton, {
+		Size = UDim2.fromScale(1, 1),
+		Position = UDim2.fromScale(0.5, 0.5),
+		AnchorPoint = Vector2.one / 2,
+	})
+
+	return Blend.New("TextButton")({
+		Size = UDim2.fromScale(0.100, 0.300),
+		Position = UDim2.fromScale(0.93, 0.75),
+		AnchorPoint = Vector2.one / 2,
+		BackgroundTransparency = 1,
+
+		[Blend.OnEvent("Activated")] = function()
+			self.Activated:Fire()
+		end,
+
+		[Blend.Instance] = function(rbx)
+			self._buttonModel:SetButton(rbx)
+		end,
+
+		[Blend.Children] = {
+			Blend.New("UIScale")({
+				Scale = scaleSpring,
+			}),
+			-- We no more need Blend.Children
+			clickButton,
+		},
+	})
 end
 
 function Notification:_render()
 	local percentVisible = self._percentVisible:ObserveRenderStepped()
-	print(ViewPortSize)
+	local scale = Blend.Computed(percentVisible, function(visible)
+		return 0.8 + 0.2 * visible
+	end)
 
 	return Blend.New("Frame")({
-		Size = UDim2.fromScale(1, 1),
-		Position = UDim2.fromScale(0.5, 0.5),
+		Size = UDim2.fromScale(0.5, 0.15),
+		Position = UDim2.fromScale(0.5, 0.2),
 		AnchorPoint = Vector2.one / 2,
 		Name = "NotifcationContainer",
 
@@ -95,62 +152,21 @@ function Notification:_render()
 
 		[Blend.Children] = {
 			Blend.New("UIScale")({
-				Scale = Blend.Computed(percentVisible, function(visible)
-					return 0.7 + 0.3 * visible
-				end),
+				Scale = scale,
 			}),
 
 			Blend.New("UICorner")({
 				CornerRadius = UDim.new(0.2, 0),
 			}),
 
-			Blend.New("TextLabel")({
-				Size = UDim2.fromScale(0.9, 0.5),
-				Position = UDim2.fromScale(0.5, 0.5),
-				AnchorPoint = Vector2.one / 2,
-				BackgroundTransparency = 1,
-				FontSize = Enum.FontSize.Size18,
-				TextXAlignment = Enum.TextXAlignment.Left,
-				TextYAlignment = Enum.TextYAlignment.Top,
-				FontFace = Font.new(
-					"rbxasset://fonts/families/GothamSSm.json",
-					Enum.FontWeight.Medium,
-					Enum.FontStyle.Normal
-				),
-				Text = self._labelText,
+			self._clickButton,
+
+			Label({
+				message = self._labelText,
 			}),
 
-			Blend.New("Frame")({
-				-- Bad way but we need to do achieve that somehow!
-				Size = Blend.Computed(self._titleSize, function(textSize)
-					return UDim2.fromScale(textSize.X / ViewPortSize.X + 0.1, textSize.Y / ViewPortSize.Y + 0.2)
-				end),
-				Position = UDim2.fromScale(0.2, -0.02),
-				AnchorPoint = Vector2.one / 2,
-				Rotation = -2,
-				Name = "Title",
-				BackgroundColor3 = Color3.fromRGB(252, 107, 107),
-
-				[Blend.Children] = {
-					Blend.New("UICorner")({
-						CornerRadius = UDim.new(1, 0),
-					}),
-
-					Blend.New("TextLabel")({
-						Size = UDim2.fromScale(0.9, 1),
-						Position = UDim2.fromScale(0.5, 0.5),
-						AnchorPoint = Vector2.one / 2,
-						TextScaled = true,
-						BackgroundTransparency = 1,
-						Text = self._title,
-						TextColor3 = Color3.fromRGB(255, 255, 255),
-						FontFace = Font.new(
-							"rbxasset://fonts/families/GothamSSm.json",
-							Enum.FontWeight.Bold,
-							Enum.FontStyle.Normal
-						),
-					}),
-				},
+			Tooltip({
+				text = self._title,
 			}),
 		},
 	})

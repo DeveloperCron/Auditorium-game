@@ -11,6 +11,7 @@
   "dependencies": {
     "@quenty/basicpane": "^7.15.0",
     "@quenty/binder": "^8.19.1",
+    "@quenty/buttonhighlightmodel": "^8.8.0",
     "@quenty/characterutils": "^6.8.0",
     "@quenty/clienttranslator": "^8.23.0",
     "@quenty/cmdrservice": "^7.17.0",
@@ -23,6 +24,7 @@
     "@quenty/playerutils": "^2.16.0",
     "@quenty/remoting": "^6.6.0",
     "@quenty/servicebag": "^6.8.0",
+    "@quenty/sprites": "^8.2.0",
     "@quenty/textserviceutils": "^7.22.0"
   },
   "publishConfig": {

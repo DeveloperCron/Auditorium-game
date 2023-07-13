@@ -7,6 +7,10 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local GroupUtils = require("GroupUtils")
+local RxCharacterUtils = require("RxCharacterUtils")
+local RxBrioUtils = require("RxBrioUtils")
+local RxInstanceUtils = require("RxInstanceUtils")
+local Rx = require("Rx")
 local FruitoloAuditoriumBindersClient = require("FruitoloAuditoriumBindersClient")
 
 local player = Players.LocalPlayer
