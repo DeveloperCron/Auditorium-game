@@ -14,7 +14,7 @@ return function(target)
 	notification.Gui.Parent = target
 
 	renderMaid:GiveTask(notification.Activated:Connect(function()
-		notification:Hide(true)
+		notification:Hide()
 	end))
 
 	return function()

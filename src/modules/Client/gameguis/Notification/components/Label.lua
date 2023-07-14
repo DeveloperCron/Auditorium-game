@@ -1,42 +1,48 @@
 --[=[
     @class Label
 ]=]
-
-type IProps = {
-	message: string,
-}
-
 local require = require(script.Parent.loader).load(script)
 local Blend = require("Blend")
-local Maid = require("Maid")
+local BaseObject = require("BaseObject")
 
-local function Label(props: IProps)
-	local renderMaid = Maid.new()
-	local message = Blend.Computed(props.message, function(Value)
+local Label = setmetatable({}, BaseObject)
+Label.__index = Label
+
+function Label.new(message)
+	local self = setmetatable(BaseObject.new(), Label)
+
+	self._message = Blend.Computed(message, function(Value)
 		return Value
 	end)
 
-	local isTyping = false
-	local visibleGraphemes = Blend.State(-1)
+	self._visibleGraphemes = Blend.State(-1)
+	self._maid:GiveTask(self._visibleGraphemes)
 
-	local function startTypeWrite(computedMessage)
-		visibleGraphemes:SetValue(0)
+	self._isTyping = Blend.State(false)
+	self._maid:GiveTask(self._isTyping)
 
-		-- if we just started typing, we need to start a loop to type in the text
-		if not isTyping then
-			isTyping = true
+	return self
+end
 
-			for _ in utf8.graphemes(computedMessage) do
-				visibleGraphemes:SetValue(visibleGraphemes.Value + 1)
-				task.wait(0.03)
-			end
+function Label:_startTypeWrite(computedMessage: string)
+	self._visibleGraphemes:SetValue(0)
 
-			isTyping = false
+	-- if we just started typing, we need to start a loop to type in the text
+	if not self._isTyping.Value then
+		self._isTyping:SetValue(true)
+
+		for _ in utf8.graphemes(computedMessage) do
+			self._visibleGraphemes:SetValue(self._visibleGraphemes.Value + 1)
+			task.wait(0.03)
 		end
-	end
 
-	renderMaid:GiveTask(message:Subscribe(function(sentence)
-		startTypeWrite(sentence)
+		self._isTyping:SetValue(false)
+	end
+end
+
+function Label:render()
+	self._maid:GiveTask(self._message:Subscribe(function(sentence)
+		self:_startTypeWrite(sentence)
 	end))
 
 	return Blend.New("TextLabel")({
@@ -50,8 +56,8 @@ local function Label(props: IProps)
 		TextYAlignment = Enum.TextYAlignment.Top,
 		TextColor3 = Color3.fromRGB(53, 53, 53),
 		FontFace = Font.new("rbxasset://fonts/families/FredokaOne.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
-		Text = message,
-		MaxVisibleGraphemes = visibleGraphemes,
+		Text = self._message,
+		MaxVisibleGraphemes = self._visibleGraphemes,
 
 		[Blend.Children] = {
 			Blend.New("UITextSizeConstraint")({

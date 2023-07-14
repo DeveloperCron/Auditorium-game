@@ -22,6 +22,7 @@ function FruitoloAuditoriumService:Init(serviceBag)
 	self._serviceBag:GetService(require("PlayerService"))
 	self._serviceBag:GetService(require("ServerlockService"))
 	self._serviceBag:GetService(require("FruitoloPermissions"))
+	self._serviceBag:GetService(require("NotificationServer"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumBindersServer"))
 end
 

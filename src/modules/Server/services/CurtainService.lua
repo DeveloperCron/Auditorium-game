@@ -53,8 +53,7 @@ function CurtainService:Start()
 end
 
 function CurtainService:Cleanup()
-	print("Cleaning up")
-	self._maid:Cleanup()
+	self._maid:DoCleaning()
 end
 
 return CurtainService

@@ -81,7 +81,7 @@ function DashboardService:_renderDashboard()
 end
 
 function DashboardService:Destroy()
-	self._maid:Cleanup()
+	self._maid:DoCleaning()
 end
 
 return DashboardService
