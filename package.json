@@ -12,6 +12,7 @@
     "@quenty/basicpane": "^7.15.0",
     "@quenty/binder": "^8.19.1",
     "@quenty/buttonhighlightmodel": "^8.8.0",
+    "@quenty/cancellabledelay": "^3.4.0",
     "@quenty/characterutils": "^6.8.0",
     "@quenty/clienttranslator": "^8.23.0",
     "@quenty/cmdrservice": "^7.17.0",

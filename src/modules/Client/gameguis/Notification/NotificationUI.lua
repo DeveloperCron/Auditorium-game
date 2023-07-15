@@ -108,7 +108,7 @@ function NotificationUI:_render()
 				Name = "Notification",
 				[Blend.Children] = {
 					Blend.New("UICorner")({
-						CornerRadius = UDim.new(0.2, 0),
+						CornerRadius = UDim.new(0.15, 0),
 					}),
 
 					-- Components
