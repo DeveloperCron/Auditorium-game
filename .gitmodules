@@ -1,0 +1,6 @@
+[submodule "lib/evenmore"]
+	path = lib/evenmore
+	url = https://github.com/ottohatt/evenmore
+[submodule "lib/icon"]
+	path = lib/icon
+	url = https://github.com/DeveloperCron/TopbarPlus.git
