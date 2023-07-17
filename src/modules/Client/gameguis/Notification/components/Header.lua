@@ -10,6 +10,7 @@ local Rx = require("Rx")
 local TextServiceUtils = require("TextServiceUtils")
 
 local Header = setmetatable({}, BaseObject)
+Header.ClassName = "Header"
 Header.__index = Header
 
 function Header.new(text: string)
@@ -32,15 +33,6 @@ function Header.new(text: string)
 	return self
 end
 
---[=[
-	```lua
-	_observableTextSize(text):Subscribe(function(value)
-		...
-	end)
-	```
-	@return Observable<Vector2> -- Returns and observable that emits Vector2  
-
-]=]
 function Header:_observeTextSize()
 	return TextServiceUtils.observeSizeForLabelProps({
 		Text = self._text,

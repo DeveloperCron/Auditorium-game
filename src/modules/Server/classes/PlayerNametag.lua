@@ -1,23 +1,25 @@
 --[=[
-	@class OverheadClass
+	@class PlayerNametag
 ]=]
 
 local require = require(script.Parent.loader).load(script)
-local CharacterUtils = require("CharacterUtils")
-local PlayerUtils = require("PlayerUtils")
 local GroupUtils = require("GroupUtils")
+local Maid = require("Maid")
+local PlayerUtils = require("PlayerUtils")
+local CharacterUtils = require("CharacterUtils")
 
+-- Maybe change that to Rx?
 local ServerStorage = game:GetService("ServerStorage")
 local BiilBoardGui = ServerStorage.BillBoardGui
-
 local Nametag: BillboardGui = BiilBoardGui.Nametag
 
-local OverheadClass = {}
-OverheadClass.ClassName = "NametagClass"
-OverheadClass.__index = OverheadClass
+local PlayerNametag = {}
+PlayerNametag.ClassName = "Nametag"
+PlayerNametag.__index = PlayerNametag
 
-function OverheadClass:addOverhead(player: Player)
+function PlayerNametag.addNameTag(player)
 	assert(typeof(player) == "Instance", "Bad player")
+	local nametagMaid = Maid.new()
 
 	local humanoidRootPart = CharacterUtils.getAlivePlayerRootPart(player)
 	local humanoid = CharacterUtils.getPlayerHumanoid(player)
@@ -27,6 +29,7 @@ function OverheadClass:addOverhead(player: Player)
 
 	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 	local newOverhead = Nametag:Clone()
+	nametagMaid:GiveTask(newOverhead)
 
 	local Frame = newOverhead.Frame
 	local UpperText: TextLabel = Frame.UpperText
@@ -34,10 +37,17 @@ function OverheadClass:addOverhead(player: Player)
 
 	UpperText.Text = PlayerUtils.formatName(player)
 	-- Promising the player role
-	GroupUtils.promiseRoleInGroup(player, game.CreatorId):Then(function(rank)
-		LowerText.Text = rank
-	end)
+	nametagMaid:GiveTask(GroupUtils.promiseRoleInGroup(player, game.CreatorId)
+		:Then(function(rank)
+			LowerText.Text = rank
+		end)
+		:Catch(function()
+			warn("[PlayerNametag] | Error resolving promise")
+		end))
+
 	newOverhead.Parent = humanoidRootPart
+
+	return nametagMaid
 end
 
-return OverheadClass
+return PlayerNametag

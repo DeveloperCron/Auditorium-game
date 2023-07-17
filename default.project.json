@@ -10,7 +10,15 @@
           "$path": "src/modules"
         },
         "packages": {
-          "$path": "node_modules"
+          "$path": "node_modules",
+
+          "@ottohatt": {
+            "$path": "lib/evenmore/"
+          },
+
+          "icon": {
+            "$path": "lib/icon/"
+          }
         }
       },
       "FruitoloAuditoriumScripts": {

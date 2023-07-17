@@ -1,24 +1,20 @@
 --[=[
-    @class DashboardUI
+    @class DashboardPanel
 ]=]
 
 local require = require(script.Parent.loader).load(script)
-local Blend = require("Blend")
 local BasicPane = require("BasicPane")
-local ObservableList = require("ObservableList")
+local Blend = require("Blend")
 local RxBrioUtils = require("RxBrioUtils")
+local ObservableList = require("ObservableList")
 local DashboardButton = require("DashboardButton")
 
-local DashboardUI = setmetatable({}, BasicPane)
-DashboardUI.ClassName = "DashboardUI"
-DashboardUI.__index = DashboardUI
+local DashboardPanel = setmetatable({}, BasicPane)
+DashboardPanel.ClassName = "DashboardPanel"
+DashboardPanel.__index = DashboardPanel
 
-function DashboardUI.new()
-	local self = setmetatable(BasicPane.new(), DashboardUI)
-
-	self._title = Instance.new("StringValue")
-	self._title.Value = "Auditorium Controls"
-	self._maid:GiveTask(self._title)
+function DashboardPanel.new()
+	local self = setmetatable(BasicPane.new(), DashboardPanel)
 
 	self._children = ObservableList.new()
 	self._maid:GiveTask(self._children)
@@ -30,13 +26,13 @@ function DashboardUI.new()
 	return self
 end
 
-function DashboardUI:AddDashboardButton(class)
+function DashboardPanel:AddDashboardButton(class)
 	assert(DashboardButton.isDashboardButton(class), "Bad dashboard button")
 
 	return self._children:Add(class)
 end
 
-function DashboardUI:_render()
+function DashboardPanel:_render()
 	local backgroundColor = Color3.fromRGB(188, 177, 162)
 	return Blend.New("Frame")({
 		BackgroundColor3 = backgroundColor,
@@ -60,7 +56,7 @@ function DashboardUI:_render()
 					Enum.FontWeight.Bold,
 					Enum.FontStyle.Normal
 				),
-				Text = self._title,
+				Text = "Fruitolo Controls",
 				TextColor3 = Color3.fromRGB(255, 255, 255),
 				TextScaled = true,
 				TextSize = 14,
@@ -95,4 +91,4 @@ function DashboardUI:_render()
 	})
 end
 
-return DashboardUI
+return DashboardPanel

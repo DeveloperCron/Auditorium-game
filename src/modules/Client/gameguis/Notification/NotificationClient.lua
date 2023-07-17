@@ -11,10 +11,10 @@ local require = require(script.Parent.loader).load(script)
 
 local Maid = require("Maid")
 local ScreenGuiProvider = require("ScreenGuiProvider")
-local GetRemoteEvent = require("GetRemoteEvent")
 local NotificationUI = require("NotificationUI")
 local ObservableList = require("ObservableList")
 local cancellableDelay = require("cancellableDelay")
+local FruitoloConstants = require("FruitoloConstants")
 local Rx = require("Rx")
 
 local NotificationClient = {}
@@ -25,7 +25,7 @@ function NotificationClient:Init(serviceBag)
 	self._serviceBag = assert(serviceBag, "No serviceBag")
 	self._maid = Maid.new()
 
-	self._event = GetRemoteEvent("notificationEvent")
+	self._event = FruitoloConstants.NOTIFICATION_EVENT
 	self._maid:GiveTask(self._event)
 
 	self._notificationsList = ObservableList.new()
@@ -37,7 +37,7 @@ function NotificationClient:Init(serviceBag)
 		local notification, key = brio:GetValue()
 		local maid = brio:ToMaid()
 
-		maid:GiveTask(Rx.fromSignal(notification.Activated):Subscribe(function()
+		maid:GiveTask(notification.Activated:Connect(function()
 			notification:Hide()
 		end))
 

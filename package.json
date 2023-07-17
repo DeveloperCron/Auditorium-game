@@ -16,6 +16,7 @@
     "@quenty/characterutils": "^6.8.0",
     "@quenty/clienttranslator": "^8.23.0",
     "@quenty/cmdrservice": "^7.17.0",
+    "@quenty/colorpalette": "^4.27.0",
     "@quenty/genericscreenguiprovider": "^7.22.0",
     "@quenty/grouputils": "^6.6.0",
     "@quenty/instanceutils": "^7.15.0",
@@ -26,6 +27,8 @@
     "@quenty/remoting": "^6.6.0",
     "@quenty/servicebag": "^6.8.0",
     "@quenty/sprites": "^8.2.0",
+    "@quenty/textfilterservice": "^7.9.0",
+    "@quenty/textfilterutils": "^6.6.0",
     "@quenty/textserviceutils": "^7.22.0"
   },
   "publishConfig": {

@@ -14,6 +14,7 @@ local InputImageLibrary = require("InputImageLibrary")
 local Signal = require("Signal")
 
 local Button = setmetatable({}, BaseObject)
+Button.ClassName = "Button"
 Button.__index = Button
 
 function Button.new()
@@ -76,6 +77,10 @@ function Button:render(props: IButtonProps)
 		[Blend.Children] = {
 			Blend.New("UIScale")({
 				Scale = scaleSpring,
+			}),
+
+			Blend.New("UIAspectRatioConstraint")({
+				AspectRatio = 1,
 			}),
 			-- We no more need Blend.Children
 			self._button,

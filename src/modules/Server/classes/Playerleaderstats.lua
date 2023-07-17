@@ -1,14 +1,14 @@
 --[=[
-	@class LeaderstatsClass
+	@class Playerleaderstats
 ]=]
 local require = require(script.Parent.loader).load(script)
 local GroupUtils = require("GroupUtils")
 
-local LeaderstatsClass = {}
-LeaderstatsClass.ClassName = "LeaderstatsClass"
-LeaderstatsClass.__index = LeaderstatsClass
+local Playerleaderstats = {}
+Playerleaderstats.ClassName = "Playerleaderstats"
+Playerleaderstats.__index = Playerleaderstats
 
-function LeaderstatsClass.registerLeaderstats(player: Player)
+function Playerleaderstats.register(player: Player)
 	assert(typeof(player) == "Instance", "Bad player")
 
 	local leaderstats = Instance.new("Folder")
@@ -25,4 +25,4 @@ function LeaderstatsClass.registerLeaderstats(player: Player)
 	leaderstats.Parent = player
 end
 
-return LeaderstatsClass
+return Playerleaderstats

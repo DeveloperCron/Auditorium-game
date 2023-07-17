@@ -1,8 +1,8 @@
 --[=[
-    @class DashboardButton
+    @class DashboardButton.lua
 ]=]
-
 local require = require(script.Parent.loader).load(script)
+local ButtonHighlightModel = require("ButtonHighlightModel")
 local Blend = require("Blend")
 local Signal = require("Signal")
 local BasicPane = require("BasicPane")
@@ -13,8 +13,6 @@ DashboardButton.__index = DashboardButton
 
 function DashboardButton.new()
 	local self = setmetatable(BasicPane.new(), DashboardButton)
-	self.Activated = Signal.new()
-	self._maid:GiveTask(self.Activated)
 
 	self._displayName = Instance.new("StringValue")
 	self._displayName.Value = ""
@@ -27,6 +25,16 @@ function DashboardButton.new()
 	self._keypoint2 = Instance.new("Color3Value")
 	self._keypoint2.Value = Color3.fromRGB(255, 211, 211)
 	self._maid:GiveTask(self._keypoint2)
+
+	self.Activated = Signal.new()
+	self._maid:GiveTask(self.Activated)
+
+	self._buttonModel = ButtonHighlightModel.new()
+	self._maid:GiveTask(self._buttonModel)
+
+	self._maid:GiveTask(self._buttonModel:ObserveIsPressed():Subscribe(function()
+		self.Activated:Fire()
+	end))
 
 	self._maid:GiveTask(self:_render():Subscribe(function(gui)
 		self.Gui = gui
@@ -59,8 +67,8 @@ function DashboardButton:_render()
 		Name = "Button",
 		Text = "",
 
-		[Blend.OnEvent("Activated")] = function()
-			self.Activated:Fire()
+		[Blend.Instance] = function(rbx)
+			self._buttonModel:SetButton(rbx)
 		end,
 
 		[Blend.Children] = {

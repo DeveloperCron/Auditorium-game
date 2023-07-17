@@ -4,7 +4,7 @@
 
 local require = require(script.Parent.loader).load(script)
 local Maid = require("Maid")
-local GetRemoteEvent = require("GetRemoteEvent")
+local FruitoloConstants = require("FruitoloConstants")
 local GroupUtils = require("GroupUtils")
 local Rx = require("Rx")
 
@@ -16,7 +16,7 @@ function CurtainService:Init(serviceBag)
 	self._serviceBag = assert(serviceBag, "No serviceBag")
 	self._maid = Maid.new()
 
-	self._curtainEvent = GetRemoteEvent("curtainEvent")
+	self._curtainEvent = FruitoloConstants.CURTAIN_EVENT
 	self._curtainBinders = self._serviceBag:GetService(require("FruitoloAuditoriumBindersServer")).Curtain
 end
 
@@ -42,9 +42,7 @@ function CurtainService:Start()
 
 	self._maid:GiveTask(Rx.fromSignal(self._curtainEvent.OnServerEvent)
 		:Pipe({
-			-- Check if the player can open the curtain
 			Rx.where(canOpenCurtain),
-			-- Get the state, the second argument of the RemoteEvent
 			Rx.map(function(_, state: boolean)
 				return state
 			end),

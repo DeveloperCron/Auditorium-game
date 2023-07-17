@@ -81,7 +81,7 @@ function NotificationUI:_render()
 	end)
 
 	return Blend.New("CanvasGroup")({
-		Size = UDim2.fromScale(0.5, 0.16),
+		Size = UDim2.fromScale(0.4, 0.16),
 		Position = UDim2.fromScale(0.5, 0.2),
 		AnchorPoint = Vector2.one / 2,
 		Name = "NotificationPreview",
@@ -109,6 +109,16 @@ function NotificationUI:_render()
 				[Blend.Children] = {
 					Blend.New("UICorner")({
 						CornerRadius = UDim.new(0.15, 0),
+					}),
+
+					Blend.New("UISizeConstraint")({
+						MaxSize = Vector2.new(500, 400),
+						MinSize = Vector2.new(50, 20),
+					}),
+
+					Blend.New("UIAspectRatioConstraint")({
+						AspectRatio = 5,
+						AspectType = Enum.AspectType.FitWithinMaxSize,
 					}),
 
 					-- Components

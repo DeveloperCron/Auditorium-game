@@ -6,6 +6,7 @@ local Blend = require("Blend")
 local BaseObject = require("BaseObject")
 
 local Label = setmetatable({}, BaseObject)
+Label.ClassName = "Label"
 Label.__index = Label
 
 function Label.new(message)
