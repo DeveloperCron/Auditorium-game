@@ -56,8 +56,8 @@ function ToggleButton:_render()
 		0.5
 	)
 
-	local knobColorSpring = toggle(Color3.fromRGB(79, 122, 79), Color3.fromRGB(35, 35, 35))
-	local backgroundSpring = toggle(Color3.fromRGB(35, 35, 35), Color3.fromRGB(255, 255, 255))
+	local knobColorSpring = toggle(Color3.fromRGB(255, 255, 255), Color3.fromRGB(35, 35, 35))
+	local backgroundSpring = toggle(Color3.fromRGB(255, 192, 55), Color3.fromRGB(255, 255, 255))
 	local knobPositionSpring = toggle(1, 0)
 
 	return Blend.New("Frame")({
@@ -95,7 +95,7 @@ function ToggleButton:_render()
 					}),
 
 					Blend.New("UIStroke")({
-						Thickness = 2,
+						Thickness = 1.5,
 						Color = self._strokeColor.Value,
 						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 					}),

@@ -31,7 +31,7 @@ function NotificationClient:Init(serviceBag)
 	self._notificationsList = ObservableList.new()
 	self._maid:GiveTask(self._notificationsList)
 
-	self._screenGui = self:_renderUI()
+	self._screenGui = self:_renderGui()
 
 	self._maid:GiveTask(self._notificationsList:ObserveItemsBrio():Subscribe(function(brio)
 		local notification, key = brio:GetValue()
@@ -58,12 +58,11 @@ local function makeScreenGui(maid, name: string): ScreenGui
 	return screenGui
 end
 
-function NotificationClient:_renderUI()
+function NotificationClient:_renderGui()
 	local renderMaid = Maid.new()
 	self._maid:GiveTask(renderMaid)
 
 	local screenGui = makeScreenGui(renderMaid, "NOTIFICATION")
-
 	return screenGui
 end
 
@@ -89,6 +88,10 @@ function NotificationClient:Start()
 	self._maid:GiveTask(Rx.fromSignal(self._event.OnClientEvent):Subscribe(function(data: INotificationProps)
 		self:PushNotification(data)
 	end))
+end
+
+function NotificationClient:Destroy()
+	self._maid:DoCleaning()
 end
 
 return NotificationClient

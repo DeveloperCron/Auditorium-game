@@ -1,5 +1,8 @@
 --[=[
     @class SettingsScreen
+
+	--@TODO make the use of mathematics here better and maybe optimize it more
+	AutomaticSize sucks therefore it cannot be used in this case
 ]=]
 
 local require = require(script.Parent.loader).load(script)
@@ -17,7 +20,8 @@ function SettingsScreen.new()
 	self:SetDisplayName("Settings")
 
 	self._settingsList = SettingsList.new()
-	self._settingsList:RegisterBar("Sound", true)
+	self._soundSetting = self._settingsList:RegisterBar("Sound", true)
+	self._stageSetting = self._settingsList:RegisterBar("Stage Focus", false)
 	self._maid:GiveTask(BasicPaneUtils.observeVisible(self):Subscribe(function(isVisible)
 		self._settingsList:SetVisible(isVisible)
 	end))
@@ -32,8 +36,8 @@ end
 
 function SettingsScreen:_render()
 	return self:_renderBase({
-		Position = UDim2.fromScale(0.5, 0.5),
-		Size = Vector2.new(0.350, 0.300),
+		Position = UDim2.fromScale(0.15, 0.15),
+		Size = Vector2.new(0.350, 0.240),
 
 		[Blend.Children] = {
 			self._settingsList.Gui,

@@ -1,5 +1,8 @@
 --[=[
     @class SettingsList
+
+	--@TODO
+	Add responsive calculations, the frame size should be the listLayout fit
 ]=]
 
 local require = require(script.Parent.loader).load(script)
@@ -47,8 +50,8 @@ end
 
 function SettingsList:_render()
 	return Blend.New("Frame")({
-		Size = UDim2.fromScale(1, 0.2),
-		Position = UDim2.fromScale(0.5, 0.4),
+		Size = UDim2.fromScale(1, 0.35),
+		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.one / 2,
 		BackgroundTransparency = 1,
 		Name = "List",

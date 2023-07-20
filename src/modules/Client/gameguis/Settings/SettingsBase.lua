@@ -41,7 +41,7 @@ function SettingsBase:GetDisplayName()
 end
 
 function SettingsBase:_renderBase(props)
-	local SCREEN_PADDING = 15
+	local SCREEN_PADDING = 0.05
 	local percentVisible = self._percentVisible:ObserveRenderStepped()
 	local scale = Blend.Computed(percentVisible, function(visible)
 		return 0.8 + 0.2 * visible
@@ -54,38 +54,34 @@ function SettingsBase:_renderBase(props)
 		Position = props.Position,
 		AnchorPoint = Vector2.one / 2,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+		Name = self._displayName,
+		SizeConstraint = Enum.SizeConstraint.RelativeYY,
 		Active = Blend.Computed(percentVisible, function(visible)
 			return visible > 0
 		end),
 		Visible = Blend.Computed(percentVisible, function(visible)
-			return visible > 0.3
+			return visible > 0.8
 		end),
-		Name = self._displayName,
 
 		[Blend.Children] = {
 			Blend.New("UIScale")({
 				Scale = scale,
 			}),
-
 			Blend.New("UICorner")({
 				CornerRadius = UDim.new(0.15, 0),
 			}),
-
 			Blend.New("UIPadding")({
-				PaddingTop = UDim.new(0, SCREEN_PADDING),
-				PaddingBottom = UDim.new(0, SCREEN_PADDING),
-				PaddingLeft = UDim.new(0, SCREEN_PADDING),
-				PaddingRight = UDim.new(0, SCREEN_PADDING),
+				PaddingTop = UDim.new(SCREEN_PADDING, 0),
+				PaddingBottom = UDim.new(SCREEN_PADDING, 0),
+				PaddingLeft = UDim.new(SCREEN_PADDING, 0),
+				PaddingRight = UDim.new(SCREEN_PADDING, 0),
 			}),
-
-			Blend.New("UISizeConstraint")({
-				MaxSize = Vector2.new(300, 200),
-				MinSize = Vector2.new(295, 195),
+			Blend.New("UIAspectRatioConstraint")({
+				AspectRatio = 2,
 			}),
-
 			Blend.New("Frame")({
 				Size = UDim2.fromScale(1, 0.3),
-				Position = UDim2.fromScale(0.5, 0.1),
+				Position = UDim2.fromScale(0.5, 0.15),
 				AnchorPoint = Vector2.one / 2,
 				Name = "Header",
 
@@ -118,6 +114,7 @@ function SettingsBase:_renderBase(props)
 				},
 			}),
 
+			-- Rendering the children should be done here
 			props[Blend.Children],
 		},
 	})

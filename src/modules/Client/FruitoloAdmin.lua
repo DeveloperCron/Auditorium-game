@@ -17,7 +17,7 @@ function FruitoloAdmin:Init(serviceBag)
 
 	self._PermissionServiceClient = self._serviceBag:GetService(PermissionServiceClient)
 	self._PermissionServiceClient:PromiseIsAdmin(game.Players.LocalPlayer):Then(function(value)
-		print(value)
+		print(string.format("🔰 [Fruitolo Admin] | Player is an admin? %s", tostring(value)))
 	end)
 end
 

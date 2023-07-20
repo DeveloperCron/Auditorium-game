@@ -7,7 +7,7 @@
     @usage
     ```lua
     ObserveCamaraUtils.observeCamera():Subscribe(function(camera) 
-        
+        --  Do something with the camera
     end)
     ```
 ]=]

@@ -5,6 +5,8 @@
 local require = require(game:GetService("ServerScriptService"):FindFirstChild("LoaderUtils", true).Parent).load(script)
 local Maid = require("Maid")
 local SettingsScreen = require("SettingsScreen")
+local StoryBarUtils = require("StoryBarUtils")
+local StoryBarPaneUtils = require("StoryBarPaneUtils")
 
 return function(target)
 	local maid = Maid.new()
@@ -15,6 +17,9 @@ return function(target)
 	settingsScreen.Gui.Parent = target
 	settingsScreen:Show()
 
+	-- Bind UI visiblity to switch.
+	local bar = StoryBarUtils.createStoryBar(maid, target)
+	StoryBarPaneUtils.makeVisibleSwitch(bar, settingsScreen)
 	return function()
 		maid:DoCleaning()
 	end
