@@ -3,13 +3,6 @@
 	
 	Credits for quenty 
     https://gist.github.com/Quenty/803e0a6f36804e327c60347e52803359
-
-    @usage
-    ```lua
-    ObserveCamaraUtils.observeCamera():Subscribe(function(camera) 
-        --  Do something with the camera
-    end)
-    ```
 ]=]
 
 local require = require(script.Parent.loader).load(script)
@@ -20,6 +13,10 @@ local ObservableCamera = {}
 ObservableCamera.ClassName = "ObservableCamera"
 ObservableCamera.__index = ObservableCamera
 
+--[=[
+	OnservableCamera, utility function to observe camera and the viewport
+	@return Observable
+]=]
 function ObservableCamera.observeCamera()
 	return RxInstanceUtils.observeProperty(workspace, "CurrentCamera"):Pipe({
 		Rx.where(function(value)

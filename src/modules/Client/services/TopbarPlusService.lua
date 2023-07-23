@@ -21,7 +21,7 @@ end
 
 local function makeScreenGui(maid, name: string)
 	local screenGui: ScreenGui = ScreenGuiProvider:Get(name)
-	screenGui.IgnoreGuiInset = true
+	screenGui.IgnoreGuiInset = false
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	maid:GiveTask(screenGui)
 
@@ -50,7 +50,6 @@ function TopbarPlusService:_renderUI()
 end
 
 function TopbarPlusService:Start()
-	-- Creating a new Icon Instance
 	Icon.new()
 		:setName("Settings")
 		:setImage(14130093939)

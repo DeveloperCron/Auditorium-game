@@ -2,7 +2,7 @@
     @classNotificationService
 ]=]
 
-export type IData = {
+export type IDataProps = {
 	title: string,
 	label: string,
 }
@@ -11,6 +11,7 @@ local require = require(script.Parent.loader).load(script)
 local FruitoloConstants = require("FruitoloConstants")
 local Maid = require("Maid")
 local TextFilterUtils = require("TextFilterUtils")
+local CatchFactory = require("CatchFactory")
 
 local NotificationService = {}
 NotificationService.ClassName = "NotifcationService"
@@ -24,13 +25,13 @@ function NotificationService:Init(serviceBag)
 	self._maid:GiveTask(self._notifcationEvent)
 end
 
-function NotificationService:PushNotification(player, data)
+function NotificationService:PushNotification(player: Player, data: IDataProps)
 	self._maid:GiveTask(
 		TextFilterUtils.promiseNonChatStringForBroadcast(data.label, player.UserId, Enum.TextFilterContext.PublicChat)
 			:Then(function(filtered)
 				self._notifcationEvent:FireAllClients({ title = data.title, label = filtered })
 			end)
-			:Catch(warn)
+			:Catch(CatchFactory("TextFilterUtils.promiseNonChatStringForBroadcast"))
 	)
 end
 

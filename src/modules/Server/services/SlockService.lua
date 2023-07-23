@@ -4,7 +4,6 @@
 
 local require = require(script.Parent.loader).load(script)
 local Maid = require("Maid")
-local Rx = require("Rx")
 local FruitoloConstants = require("FruitoloConstants")
 local ValueObject = require("ValueObject")
 local NotificationService = require("NotificationService")
@@ -31,12 +30,22 @@ local function getTextByValue(value: boolean)
 	return value and "Server is locked" or "Server is unlocked"
 end
 
+local function convertToBoolean(state: string)
+	if string.lower(state) == "true" then
+		return true
+	end
+
+	return false
+end
+
 function SlockService:Start()
-	self._maid:GiveTask(Rx.fromSignal(self._slockEvent):Subscribe(function(value: boolean, executor)
-		self._isLocked:SetValue(value)
+	self._maid:GiveTask(self._slockEvent:Connect(function(state: string, executor)
+		state = convertToBoolean(state)
+
+		self._isLocked:SetValue(state)
 		self._notificationService:PushNotification(
 			executor,
-			{ title = NotificationTitles.NOTIFICATION, label = getTextByValue(value) }
+			{ title = NotificationTitles.NOTIFICATION, label = getTextByValue(state) }
 		)
 	end))
 end

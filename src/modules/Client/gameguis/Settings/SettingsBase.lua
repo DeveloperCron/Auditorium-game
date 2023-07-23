@@ -76,6 +76,10 @@ function SettingsBase:_renderBase(props)
 				PaddingLeft = UDim.new(SCREEN_PADDING, 0),
 				PaddingRight = UDim.new(SCREEN_PADDING, 0),
 			}),
+			Blend.New("UISizeConstraint")({
+				MaxSize = Vector2.new(250, 140),
+				MinSize = Vector2.new(250, 240),
+			}),
 			Blend.New("UIAspectRatioConstraint")({
 				AspectRatio = 2,
 			}),
