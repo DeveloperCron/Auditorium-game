@@ -12,7 +12,7 @@ function FruitoloAuditoriumService:Init(serviceBag)
 	self._serviceBag = assert(serviceBag, "No serviceBag")
 
 	-- Internal
-	self._serviceBag:GetService(require("CurtainService"))
+	self._serviceBag:GetService(require("StageService"))
 	self._serviceBag:GetService(require("PlayerService"))
 	self._serviceBag:GetService(require("SlockService"))
 	self._serviceBag:GetService(require("FruitoloAdmin"))

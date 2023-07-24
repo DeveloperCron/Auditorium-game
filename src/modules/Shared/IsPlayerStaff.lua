@@ -12,7 +12,7 @@ local SHR_RANK = FruitoloConstants.SHR_RANK
 
 local StaffCache = {}
 
-local function IsPlayerStaff(player: Player)
+local function IsPlayerStaff(player: Player): boolean
 	assert(typeof(player) == "Instance" and player:IsA("Player"), "Bad player")
 
 	local IsStaff = StaffCache[player]

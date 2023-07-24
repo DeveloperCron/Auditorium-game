@@ -33,12 +33,10 @@ function FruitoloAdmin:Start()
 	local commandsFolder = Instance.new("Folder")
 	commandsFolder.Name = "AdminCommands"
 	commandsFolder.Parent = TextChatService
-	-- self._maid:GiveTask(commandsFolder)
 
 	for _, commandInfo in Commands.List do
 		local textChatCommand = Instance.new("TextChatCommand")
 		textChatCommand.Name = commandInfo.PrimaryAlias
-		-- Set the primary and secondary aliases with the prefix set in the Commands module
 		textChatCommand.PrimaryAlias = Commands.Prefix .. commandInfo.PrimaryAlias
 		if commandInfo.SecondaryAlias then
 			textChatCommand.SecondaryAlias = Commands.Prefix .. commandInfo.SecondaryAlias
@@ -46,21 +44,15 @@ function FruitoloAdmin:Start()
 		textChatCommand.Parent = commandsFolder
 
 		self._maid:GiveTask(textChatCommand.Triggered:Connect(function(textSource, message)
-			-- Find the player object of the speaker
 			local player = Players:GetPlayerByUserId(textSource.UserId)
 			assert(player ~= nil, string.format("No player with UserId: %d", textSource.UserId))
 
-			-- Make sure the player has permission to use this command
 			local isPlayerAllowed = self._adminCache:Contains(player)
 			if isPlayerAllowed then
-				-- Clean up whitespace in the message so that extra spaces do not cause empty strings in the split
 				local cleanMessage = string.gsub(message, "%s+", " ")
-				-- Split up the message into individual words
 				local words = string.split(cleanMessage, " ")
-				-- The first word is the command, select all words except the first to pass in as arguments
 				local args = table.move(words, 2, #words, 1, {})
 
-				-- Call the set command Function, passing in the player who triggered it and any additional words after the command
 				commandInfo.Function(player, args)
 			end
 		end))
@@ -76,7 +68,9 @@ end
 function FruitoloAdmin:Remove(player: Player)
 	assert(typeof(player) == "Instance", "Bad player")
 
+	-- Might need to be removed!
 	if self._adminCache:Contains(player) then
+		print("Is player removed?")
 		self._adminCache:Remove(player)
 	end
 end

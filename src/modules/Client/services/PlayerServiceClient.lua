@@ -32,7 +32,7 @@ end
 function PlayerServiceClient:Start()
 	self._maid:GiveTask(GroupUtils.promiseRankInGroup(player, game.CreatorId)
 		:Then(function(rank: number)
-			if rank >= 27 and not RunService:IsStudio() then
+			if rank >= 27 or RunService:IsStudio() then
 				self:_destroyAllDoors()
 			end
 		end)

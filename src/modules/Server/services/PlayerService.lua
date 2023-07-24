@@ -16,8 +16,9 @@ local FruitoloAdmin = require("FruitoloAdmin")
 local IsPlayerStaff = require("IsPlayerStaff")
 local IsPlayerSHR = require("IsPlayerSHR")
 local CatchFactory = require("CatchFactory")
+local FruitoloConstants = require("FruitoloConstants")
 
-local groupId = game.CreatorId
+local GROUP_ID = FruitoloConstants.GROUP_ID
 
 local PlayerService = {}
 PlayerService.ServiceName = "PlayerService"
@@ -48,7 +49,7 @@ function PlayerService:_createLeaderstats(player: Player, maid)
 	Leaderstats.Parent = player
 
 	-- Gross but works
-	maid:GiveTask(GroupUtils.promiseRoleInGroup(player, groupId)
+	maid:GiveTask(GroupUtils.promiseRoleInGroup(player, GROUP_ID)
 		:Then(function(role)
 			Rank.Value = role
 		end)
@@ -59,9 +60,10 @@ function PlayerService:Start()
 	local function onPlayerAddedBrio(brio)
 		local player = brio:GetValue()
 		local maid = brio:ToMaid()
+		self._maid[player] = maid
 
 		local isServerLocked = self._slockService:IsLocked()
-		if isServerLocked and IsPlayerStaff(player) or not RunService:IsStudio() then
+		if isServerLocked and IsPlayerStaff(player) and not RunService:IsStudio() then
 			player:Kick("Server is locked!")
 		end
 
@@ -76,7 +78,7 @@ function PlayerService:Start()
 			local pollerMaid = brioCharacter:ToMaid()
 
 			self._collisionsFilteringService:addCharacter(character)
-			self._nametagPollers[player] = Nametag(player, maid)
+			self._nametagPollers[player] = Nametag(player, character, pollerMaid)
 
 			pollerMaid:GiveTask(function()
 				if self._nametagPollers[player] then
@@ -86,8 +88,10 @@ function PlayerService:Start()
 		end))
 
 		maid:GiveTask(function()
-			self._nametagPollers[player] = nil
 			self._fruitoloAdmin:Remove(player)
+
+			self._nametagPollers[player] = nil
+			self._maid[player] = nil
 		end)
 	end
 

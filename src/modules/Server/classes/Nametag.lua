@@ -1,46 +1,42 @@
 --[=[
-    @class Nametag
+	@class Nametag.lua
 ]=]
 
 local require = require(script.Parent.loader).load(script)
-local ServerStorage = game:GetService("ServerStorage")
-local GroupUtils = require("GroupUtils")
-local CharacterUtils = require("CharacterUtils")
-local PlayerUtils = require("PlayerUtils")
-local Blend = require("Blend")
+local CatchFactory = require("CatchFactory")
 local PromiseChild = require("PromiseChild")
+local GroupUtils = require("GroupUtils")
+local PlayerUtils = require("PlayerUtils")
+local Resources = require("Resources")
+local FruitoloConstants = require("FruitoloConstants")
 
-local function Nametag(player: Player, maid)
-	maid:GiveTask(PromiseChild(ServerStorage, "BillBoardGui"):Then(function(BillBoardFolder)
-		maid:GiveTask(PromiseChild(BillBoardFolder, "Nametag"):Then(function(nametag: Instance)
-			local humanoidRootPart = CharacterUtils.getAlivePlayerRootPart(player)
-			local humanoid = CharacterUtils.getPlayerHumanoid(player)
-			if not humanoidRootPart and not humanoid then
-				return
-			end
-			humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+local GROUP_ID = FruitoloConstants.GROUP_ID
 
-			local newNametag = nametag:Clone()
-			newNametag.Parent = humanoidRootPart
+local function Nametag(player, character, characterMaid)
+	characterMaid:GiveTask(PromiseChild(character, "Head"):Then(function(head)
+		local PlayerOverhead = Resources.GetGuiObject("Nametag"):Clone()
+		PlayerOverhead.Adornee = head
 
-			local formattedName = PlayerUtils.formatName(player)
-			local promisePlayerRole = GroupUtils.promiseRoleInGroup(player, game.CreatorId)
-			maid:GiveTask(promisePlayerRole
-				:Then(function(role)
-					maid:GiveTask(Blend.mount(newNametag, {
-						Blend.Find("Frame")({
-							Blend.Find("UpperText")({
-								Text = formattedName,
-							}),
-							Blend.Find("LowerText")({
-								Text = role,
-							}),
-						}),
-					}))
-				end)
-				:Catch("GroupUtils.promiseRoleInGroup() is failing"))
-		end))
-	end))
+		characterMaid:GiveTask(PromiseChild(PlayerOverhead, "Frame")
+			:Then(function(frame)
+				local LowerText = frame.LowerText
+				local UpperText = frame.UpperText
+
+				local formattedName = PlayerUtils.formatName(player)
+				UpperText.Text = formattedName
+
+				characterMaid:GiveTask(GroupUtils.promiseRoleInGroup(player, GROUP_ID)
+					:Then(function(role)
+						LowerText.Text = role
+					end)
+					:Catch(CatchFactory("GroupUtils.promiseRoleInGroup")))
+			end)
+			:Catch(CatchFactory("PromiseChild"))
+			:Finally(function()
+				PlayerOverhead.Parent = head
+				characterMaid:GiveTask(PlayerOverhead)
+			end))
+	end):Catch(CatchFactory("PromiseChild")))
 end
 
 return Nametag
