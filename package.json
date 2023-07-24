@@ -26,6 +26,7 @@
     "@quenty/playerutils": "^2.16.0",
     "@quenty/remoting": "^6.6.0",
     "@quenty/servicebag": "^6.8.0",
+    "@quenty/softshutdown": "^3.35.0",
     "@quenty/sprites": "^8.2.0",
     "@quenty/textfilterservice": "^7.9.0",
     "@quenty/textfilterutils": "^6.6.0",

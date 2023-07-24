@@ -36,7 +36,7 @@ end
 
 function SettingsScreen:_render()
 	return self:_renderBase({
-		Position = UDim2.fromScale(0.15, 0.155),
+		Position = UDim2.fromScale(0.13, 0.15),
 		Size = Vector2.new(0.350, 0.240),
 
 		[Blend.Children] = {

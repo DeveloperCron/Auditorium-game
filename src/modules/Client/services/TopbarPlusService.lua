@@ -22,7 +22,8 @@ end
 local function makeScreenGui(maid, name: string)
 	local screenGui: ScreenGui = ScreenGuiProvider:Get(name)
 	screenGui.IgnoreGuiInset = false
-	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	-- screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.ScreenInsets = Enum.ScreenInsets.CoreUISafeInsets
 	maid:GiveTask(screenGui)
 
 	return screenGui

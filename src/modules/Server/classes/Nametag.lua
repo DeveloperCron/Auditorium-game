@@ -8,6 +8,7 @@ local PromiseChild = require("PromiseChild")
 local GroupUtils = require("GroupUtils")
 local PlayerUtils = require("PlayerUtils")
 local Resources = require("Resources")
+local CharcterUtils = require("CharacterUtils")
 local FruitoloConstants = require("FruitoloConstants")
 
 local GROUP_ID = FruitoloConstants.GROUP_ID
@@ -16,6 +17,11 @@ local function Nametag(player, character, characterMaid)
 	characterMaid:GiveTask(PromiseChild(character, "Head"):Then(function(head)
 		local PlayerOverhead = Resources.GetGuiObject("Nametag"):Clone()
 		PlayerOverhead.Adornee = head
+
+		local humanoid: Humanoid = CharcterUtils.getPlayerHumanoid(player)
+		if humanoid then
+			humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+		end
 
 		characterMaid:GiveTask(PromiseChild(PlayerOverhead, "Frame")
 			:Then(function(frame)

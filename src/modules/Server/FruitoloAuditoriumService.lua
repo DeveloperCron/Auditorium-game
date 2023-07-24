@@ -18,6 +18,7 @@ function FruitoloAuditoriumService:Init(serviceBag)
 	self._serviceBag:GetService(require("FruitoloAdmin"))
 	self._serviceBag:GetService(require("NotificationService"))
 	self._serviceBag:GetService(require("CollisionsFilteringService"))
+	self._serviceBag:GetService(require("SoftShutdownService"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumBindersServer"))
 end
 

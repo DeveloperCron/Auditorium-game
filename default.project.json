@@ -38,7 +38,11 @@
 
       "BillBoardGui": {
         "$className": "Folder",
-        "$ignoreUnknownInstances": true
+        "$ignoreUnknownInstances": true,
+
+        "Nametag": {
+          "$path": "modules/models/Nametag.rbxmx"
+        }
       }
     }
   }

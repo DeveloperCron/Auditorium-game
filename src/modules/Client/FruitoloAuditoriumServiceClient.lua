@@ -17,6 +17,7 @@ function FruitoloAuditoriumServiceClient:Init(serviceBag)
 	self._serviceBag:GetService(require("NotificationClient"))
 	self._serviceBag:GetService(require("TopbarPlusService"))
 	self._serviceBag:GetService(require("PlayerServiceClient"))
+	self._serviceBag:GetService(require("SoftShutdownServiceClient"))
 	self._serviceBag:GetService(require("FruitoloAuditoriumTranslator"))
 end
 

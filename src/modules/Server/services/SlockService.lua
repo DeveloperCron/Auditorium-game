@@ -17,7 +17,7 @@ function SlockService:Init(serviceBag)
 	self._serviceBag = assert(serviceBag, "No serviceBag")
 	self._maid = Maid.new()
 
-	self._isLocked = ValueObject.new(true, "boolean")
+	self._isLocked = ValueObject.new(false, "boolean")
 	self._maid:GiveTask(self._isLocked)
 
 	self._slockEvent = FruitoloConstants.SLOCK_EVENT
