@@ -8,13 +8,13 @@ local FruitoloConstants = require("FruitoloConstants")
 local ValueObject = require("ValueObject")
 local NotificationService = require("NotificationService")
 local NotificationTitles = require("NotificationTitles")
+local ServiceBag = require("ServiceBag")
 
 local SlockService = {}
 SlockService.ServiceName = "SlockService"
 
 function SlockService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
 	self._isLocked = ValueObject.new(false, "boolean")
@@ -23,7 +23,7 @@ function SlockService:Init(serviceBag)
 	self._slockEvent = FruitoloConstants.SLOCK_EVENT
 	self._maid:GiveTask(self._slockEvent)
 
-	self._notificationService = self._serviceBag:GetService(NotificationService)
+	self._notificationService = serviceBag:GetService(NotificationService)
 end
 
 local function getTextByValue(value: boolean)

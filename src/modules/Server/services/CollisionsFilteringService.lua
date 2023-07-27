@@ -8,6 +8,7 @@ local require = require(script.Parent.loader).load(script)
 local PhysicsService = game:GetService("PhysicsService")
 local RxInstanceUtils = require("RxInstanceUtils")
 local Maid = require("Maid")
+local ServiceBag = require("ServiceBag")
 
 PhysicsService:RegisterCollisionGroup("Characters")
 PhysicsService:CollisionGroupSetCollidable("Characters", "Characters", false)
@@ -16,8 +17,7 @@ local CollisionsFilteringService = {}
 CollisionsFilteringService.ClassName = "CollisionsFilteringService"
 
 function CollisionsFilteringService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 end
 

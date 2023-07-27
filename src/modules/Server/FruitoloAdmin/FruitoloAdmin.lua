@@ -11,18 +11,18 @@ local Players = game:GetService("Players")
 local Maid = require("Maid")
 local ObservableSet = require("ObservableSet")
 local Commands = require("FruitoloCommands")
+local ServiceBag = require("ServiceBag")
 
 local FruitoloAdmin = {}
 FruitoloAdmin.ClassName = "FruitoloAdmin"
 
 function FruitoloAdmin:Init(serviceBag)
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	assert(
 		TextChatService.ChatVersion == Enum.ChatVersion.TextChatService,
 		"TextChatService.ChatVersion must be set to 'TextChatService'"
 	)
 
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
 	self._maid = Maid.new()
 
 	self._adminCache = ObservableSet.new()
@@ -70,7 +70,6 @@ function FruitoloAdmin:Remove(player: Player)
 
 	-- Might need to be removed!
 	if self._adminCache:Contains(player) then
-		print("Is player removed?")
 		self._adminCache:Remove(player)
 	end
 end

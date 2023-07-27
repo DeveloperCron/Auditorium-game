@@ -18,6 +18,7 @@ local IsPlayerSHR = require("IsPlayerSHR")
 local CatchFactory = require("CatchFactory")
 local FruitoloConstants = require("FruitoloConstants")
 local RagdollService = require("RagdollService")
+local ServiceBag = require("ServiceBag")
 
 local GROUP_ID = FruitoloConstants.GROUP_ID
 
@@ -25,17 +26,16 @@ local PlayerService = {}
 PlayerService.ServiceName = "PlayerService"
 
 function PlayerService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
 	self._nametagPollers = {}
 
 	-- serviceBags
-	self._slockService = self._serviceBag:GetService(SlockService)
-	self._fruitoloAdmin = self._serviceBag:GetService(FruitoloAdmin)
-	self._ragdollService = self._serviceBag:GetService(RagdollService):SetRagdollOnDeath(true)
-	self._collisionsFilteringService = self._serviceBag:GetService(CollisionsFilteringService)
+	self._slockService = serviceBag:GetService(SlockService)
+	self._fruitoloAdmin = serviceBag:GetService(FruitoloAdmin)
+	self._ragdollService = serviceBag:GetService(RagdollService):SetRagdollOnDeath(true)
+	self._collisionsFilteringService = serviceBag:GetService(CollisionsFilteringService)
 end
 
 function PlayerService:_createLeaderstats(player: Player, maid)
