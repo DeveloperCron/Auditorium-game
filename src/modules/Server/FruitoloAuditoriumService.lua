@@ -3,20 +3,23 @@
 ]=]
 
 local require = require(script.Parent.loader).load(script)
+local ServiceBag = require("ServiceBag")
 
 local FruitoloAuditoriumService = {}
 FruitoloAuditoriumService.ServiceName = "FruitoloAuditoriumService"
 
 function FruitoloAuditoriumService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
-
-	-- External
-	self._serviceBag:GetService(require("CmdrService"))
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 
 	-- Internal
-	self._serviceBag:GetService(require("PlayerService"))
-	self._serviceBag:GetService(require("FruitoloAuditoriumBindersServer"))
+	serviceBag:GetService(require("StageService"))
+	serviceBag:GetService(require("PlayerService"))
+	serviceBag:GetService(require("SlockService"))
+	serviceBag:GetService(require("FruitoloAdmin"))
+	serviceBag:GetService(require("NotificationService"))
+	serviceBag:GetService(require("CollisionsFilteringService"))
+	serviceBag:GetService(require("SoftShutdownService"))
+	serviceBag:GetService(require("FruitoloAuditoriumBindersServer"))
 end
 
 return FruitoloAuditoriumService

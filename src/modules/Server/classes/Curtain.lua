@@ -3,14 +3,14 @@
 ]=]
 
 local require = require(script.Parent.loader).load(script)
-local CurtainBase = require("CurtainBase")
+local BaseObject = require("BaseObject")
 
-local Curtain = setmetatable({}, CurtainBase)
+local Curtain = setmetatable({}, BaseObject)
 Curtain.ClassName = "Curtain"
 Curtain.__index = Curtain
 
 function Curtain.new(obj, serviceBag)
-	local self = setmetatable(CurtainBase.new(obj, serviceBag), Curtain)
+	local self = setmetatable(BaseObject.new(obj), Curtain)
 	self._serviceBag = assert(serviceBag, "No serviceBag")
 
 	return self

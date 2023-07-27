@@ -4,13 +4,22 @@
   "tree": {
     "$className": "DataModel",
     "ServerScriptService": {
+      "$ignoreUnknownInstances": true,
       "FruitoloAuditorium": {
         "$className": "Folder",
         "game": {
           "$path": "src/modules"
         },
         "packages": {
-          "$path": "node_modules"
+          "$path": "node_modules",
+
+          "@ottohatt": {
+            "$path": "lib/evenmore/"
+          },
+
+          "icon": {
+            "$path": "lib/icon/"
+          }
         }
       },
       "FruitoloAuditoriumScripts": {
@@ -30,7 +39,17 @@
 
       "BillBoardGui": {
         "$className": "Folder",
-        "$ignoreUnknownInstances": true
+        "$ignoreUnknownInstances": true,
+
+        "Nametag": {
+          "$path": "modules/models/Nametag.rbxmx"
+        }
+      }
+    },
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "StageCamera": {
+        "$path": "modules/models/StageCamera.rbxmx"
       }
     }
   }
