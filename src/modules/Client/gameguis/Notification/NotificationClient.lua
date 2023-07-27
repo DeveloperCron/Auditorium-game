@@ -15,14 +15,15 @@ local NotificationUI = require("NotificationUI")
 local ObservableList = require("ObservableList")
 local cancellableDelay = require("cancellableDelay")
 local FruitoloConstants = require("FruitoloConstants")
+local ServiceBag = require("ServiceBag")
+
 local Rx = require("Rx")
 
 local NotificationClient = {}
 NotificationClient.ClassName = "NotificationService"
 
 function NotificationClient:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
 	self._event = FruitoloConstants.NOTIFICATION_EVENT

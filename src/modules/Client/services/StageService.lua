@@ -22,6 +22,7 @@ local RxInstanceUtils = require("RxInstanceUtils")
 local ValueObject = require("ValueObject")
 local PromiseChild = require("PromiseChild")
 local CatchFactory = require("CatchFactory")
+local ServiceBag = require("ServiceBag")
 
 local player = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
@@ -30,8 +31,7 @@ local StageService = {}
 StageService.ClassName = "StageService"
 
 function StageService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
 	self._hasControl = ValueObject.new(true, "boolean")

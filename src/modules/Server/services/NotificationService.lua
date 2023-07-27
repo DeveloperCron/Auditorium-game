@@ -12,13 +12,13 @@ local FruitoloConstants = require("FruitoloConstants")
 local Maid = require("Maid")
 local TextFilterUtils = require("TextFilterUtils")
 local CatchFactory = require("CatchFactory")
+local ServiceBag = require("ServiceBag")
 
 local NotificationService = {}
 NotificationService.ClassName = "NotifcationService"
 
 function NotificationService:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
 	self._notifcationEvent = FruitoloConstants.NOTIFICATION_EVENT

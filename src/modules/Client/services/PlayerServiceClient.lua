@@ -10,19 +10,18 @@ local Maid = require("Maid")
 local FruitoloAuditoriumBindersClient = require("FruitoloAuditoriumBindersClient")
 local CatchFactory = require("CatchFactory")
 local RagdollServiceClient = require("RagdollServiceClient")
-
+local ServiceBag = require("ServiceBag")
 local player = Players.LocalPlayer
 
 local PlayerServiceClient = {}
 PlayerServiceClient.ClassName = "PlayerServiceClient"
 
 function PlayerServiceClient:Init(serviceBag)
-	assert(not self._serviceBag, "Already initialized")
-	self._serviceBag = assert(serviceBag, "No serviceBag")
+	assert(ServiceBag.isServiceBag(serviceBag), "Not a valid service bag")
 	self._maid = Maid.new()
 
-	self._rankdoorBinder = self._serviceBag:GetService(FruitoloAuditoriumBindersClient).RankDoor
-	self._serviceBag:GetService(RagdollServiceClient)
+	self._rankdoorBinder = serviceBag:GetService(FruitoloAuditoriumBindersClient).RankDoor
+	serviceBag:GetService(RagdollServiceClient)
 end
 
 function PlayerServiceClient:_destroyAllDoors()
