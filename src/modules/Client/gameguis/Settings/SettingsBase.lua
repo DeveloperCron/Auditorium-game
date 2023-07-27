@@ -42,6 +42,7 @@ end
 
 function SettingsBase:_renderBase(props)
 	local SCREEN_PADDING = 0.05
+
 	local percentVisible = self._percentVisible:ObserveRenderStepped()
 	local scale = Blend.Computed(percentVisible, function(visible)
 		return 0.8 + 0.2 * visible
@@ -52,7 +53,7 @@ function SettingsBase:_renderBase(props)
 			return UDim2.fromScale(value.X, value.Y)
 		end),
 		Position = props.Position,
-		AnchorPoint = Vector2.one / 2,
+		AnchorPoint = Vector2.new(0, 0),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		Name = self._displayName,
 		SizeConstraint = Enum.SizeConstraint.RelativeYY,

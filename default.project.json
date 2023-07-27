@@ -4,6 +4,7 @@
   "tree": {
     "$className": "DataModel",
     "ServerScriptService": {
+      "$ignoreUnknownInstances": true,
       "FruitoloAuditorium": {
         "$className": "Folder",
         "game": {
@@ -43,6 +44,12 @@
         "Nametag": {
           "$path": "modules/models/Nametag.rbxmx"
         }
+      }
+    },
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "StageCamera": {
+        "$path": "modules/models/StageCamera.rbxmx"
       }
     }
   }

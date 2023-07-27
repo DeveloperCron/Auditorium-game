@@ -21,6 +21,7 @@ function Dashboard.new(obj)
 	self._surfaceGui = self:_makeSurfaceGui()
 	self._maid:GiveTask(self._surfaceGui)
 
+	self._maid:GiveTask(self._obj)
 	self._maid.gui = self:_render()
 
 	return self

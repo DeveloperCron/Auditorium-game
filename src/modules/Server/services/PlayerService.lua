@@ -17,6 +17,7 @@ local IsPlayerStaff = require("IsPlayerStaff")
 local IsPlayerSHR = require("IsPlayerSHR")
 local CatchFactory = require("CatchFactory")
 local FruitoloConstants = require("FruitoloConstants")
+local RagdollService = require("RagdollService")
 
 local GROUP_ID = FruitoloConstants.GROUP_ID
 
@@ -33,6 +34,7 @@ function PlayerService:Init(serviceBag)
 	-- serviceBags
 	self._slockService = self._serviceBag:GetService(SlockService)
 	self._fruitoloAdmin = self._serviceBag:GetService(FruitoloAdmin)
+	self._ragdollService = self._serviceBag:GetService(RagdollService):SetRagdollOnDeath(true)
 	self._collisionsFilteringService = self._serviceBag:GetService(CollisionsFilteringService)
 end
 
@@ -60,7 +62,6 @@ function PlayerService:Start()
 	local function onPlayerAddedBrio(brio)
 		local player = brio:GetValue()
 		local maid = brio:ToMaid()
-		self._maid[player] = maid
 
 		local isServerLocked = self._slockService:IsLocked()
 		if isServerLocked and IsPlayerStaff(player) and not RunService:IsStudio() then
@@ -75,12 +76,12 @@ function PlayerService:Start()
 
 		maid:GiveTask(RxCharacterUtils.observeLastCharacterBrio(player):Subscribe(function(brioCharacter)
 			local character = brioCharacter:GetValue()
-			local pollerMaid = brioCharacter:ToMaid()
+			local characterMaid = brioCharacter:ToMaid()
 
 			self._collisionsFilteringService:addCharacter(character)
-			self._nametagPollers[player] = Nametag(player, character, pollerMaid)
+			self._nametagPollers[player] = Nametag(player, character, characterMaid)
 
-			pollerMaid:GiveTask(function()
+			characterMaid:GiveTask(function()
 				if self._nametagPollers[player] then
 					self._nametagPollers[player] = nil
 				end
@@ -89,9 +90,7 @@ function PlayerService:Start()
 
 		maid:GiveTask(function()
 			self._fruitoloAdmin:Remove(player)
-
 			self._nametagPollers[player] = nil
-			self._maid[player] = nil
 		end)
 	end
 

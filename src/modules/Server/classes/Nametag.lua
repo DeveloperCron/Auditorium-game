@@ -14,7 +14,7 @@ local FruitoloConstants = require("FruitoloConstants")
 local GROUP_ID = FruitoloConstants.GROUP_ID
 
 local function Nametag(player, character, characterMaid)
-	characterMaid:GiveTask(PromiseChild(character, "Head"):Then(function(head)
+	characterMaid:GivePromise(PromiseChild(character, "Head"):Then(function(head)
 		local PlayerOverhead = Resources.GetGuiObject("Nametag"):Clone()
 		PlayerOverhead.Adornee = head
 
@@ -23,7 +23,7 @@ local function Nametag(player, character, characterMaid)
 			humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
 		end
 
-		characterMaid:GiveTask(PromiseChild(PlayerOverhead, "Frame")
+		characterMaid:GivePromise(PromiseChild(PlayerOverhead, "Frame")
 			:Then(function(frame)
 				local LowerText = frame.LowerText
 				local UpperText = frame.UpperText

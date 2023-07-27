@@ -9,6 +9,7 @@ local GroupUtils = require("GroupUtils")
 local Maid = require("Maid")
 local FruitoloAuditoriumBindersClient = require("FruitoloAuditoriumBindersClient")
 local CatchFactory = require("CatchFactory")
+local RagdollServiceClient = require("RagdollServiceClient")
 
 local player = Players.LocalPlayer
 
@@ -21,6 +22,7 @@ function PlayerServiceClient:Init(serviceBag)
 	self._maid = Maid.new()
 
 	self._rankdoorBinder = self._serviceBag:GetService(FruitoloAuditoriumBindersClient).RankDoor
+	self._serviceBag:GetService(RagdollServiceClient)
 end
 
 function PlayerServiceClient:_destroyAllDoors()
