@@ -10,6 +10,7 @@ local SettingsList = require("SettingsList")
 local SettingsBase = require("SettingsBase")
 local BasicPaneUtils = require("BasicPaneUtils")
 local Blend = require("Blend")
+local Signal = require("Signal")
 
 local SettingsScreen = setmetatable({}, SettingsBase)
 SettingsScreen.ClassName = "SettingsScreen"
@@ -20,12 +21,18 @@ function SettingsScreen.new()
 	self:SetDisplayName("Settings")
 
 	self._settingsList = SettingsList.new()
-	self._soundSetting = self._settingsList:RegisterBar("Sound", true)
 	self._stageSetting = self._settingsList:RegisterBar("Stage Focus", false)
+	self._soundSetting = self._settingsList:RegisterBar("Sound", true)
 	self._maid:GiveTask(BasicPaneUtils.observeVisible(self):Subscribe(function(isVisible)
 		self._settingsList:SetVisible(isVisible)
 	end))
 	self._maid:GiveTask(self._settingsList)
+
+	self.FocusActivated = self._stageSetting.Activated
+	self._maid:GiveTask(self.FocusActivated)
+
+	self.SoundActivated = self._soundSetting.Activated
+	self._maid:GiveTask(self.SoundActivated)
 
 	self._maid:GiveTask(self:_render():Subscribe(function(gui)
 		self.Gui = gui
